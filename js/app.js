@@ -15,9 +15,9 @@ ctx.canvas.height = window.innerHeight;
 const sprite = new Image();
 sprite.src = './img/illuminati.png';
 
-const maxSize = 10;
+const maxSize = 8;
 const minSize = 0;
-const mouseRadius = 45;
+const mouseRadius = 60;
 
 let scene;
 let camera;
@@ -51,7 +51,7 @@ function Particle(x, y, directionX, directionY, radius, speedX, speedY, size, fr
 }
 
 Particle.prototype.draw = function () {
-    ctx.drawImage(sprite, this.size * this.frameX, this.size * this.frameY, this.size, this.size, this.x - this.radius * 4, this.y - this.radius * 4, this.radius * 8, this.radius * 8);
+    ctx.drawImage(sprite, this.size * this.frameX, this.size * this.frameY, this.size, this.size, this.x - this.radius * 5, this.y - this.radius * 5, this.radius * 10, this.radius * 10);
 };
 
 Particle.prototype.update = function () {
@@ -74,7 +74,7 @@ Particle.prototype.update = function () {
             this.radius += 1;
         }
     } else if (this.radius > minSize) {
-        this.radius -= 0.09;
+        this.radius -= 0.05;
     }
     if (this.radius < 0) {
         this.radius = 0;
@@ -124,8 +124,6 @@ const init = () => {
         console.log(pyramid);
     });
 
-    console.log(loader);
-
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -134,14 +132,18 @@ const init = () => {
         canvas.height = innerHeight;
     }
 
+     const floatingEyesPerSquareUnit = 0.0008; // Adjust this value to change the density of floating eyes
+    const viewportArea = window.innerWidth * window.innerHeight;
+    const numberOfFloatingEyes = Math.floor(viewportArea * floatingEyesPerSquareUnit);
+  
     particleArray = [];
-    for (let i = 0; i < 3000; i++) {
+    for (let i = 0; i < numberOfFloatingEyes; i++) {
         let radius = 0;
         let x = Math.random() * (innerWidth - radius * 2 - radius * 2 + radius * 2);
         let y = Math.random() * (innerHeight - radius * 2 - radius * 2 + radius * 2);
         let directionX = Math.random() * 2 - 1;
         let directionY = Math.random() * 2 - 1;
-        let speedX = (Math.random() * 2) - 1;
+        let speedX = (Math.random() * 2) -1;
         let speedY = (Math.random() * 2) - 1;
         let size = 250;
         let frameX = Math.floor(Math.random() * 4);
@@ -170,7 +172,7 @@ const animate = () => {
     canvas.width = innerWidth;
     canvas.height = innerHeight;
 
-    for (let i = 0; i < particleArray.length; i++) {
+ for (let i = 0; i < particleArray.length; i++) {
         particleArray[i].update();
     }
 
